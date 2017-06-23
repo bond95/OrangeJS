@@ -1,0 +1,30 @@
+<html>
+<head>
+	<title>Test 2</title>
+	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src="../dist/orange.min.js"></script>
+	<script type="text/javascript">
+		function Block1Controller(els) {
+			els.btn.$().click(function () {
+				els.elem1.$().css('background-color', els.btn.data);
+			});
+		}
+		$(document).ready(function () {
+			let app = new Orange();
+			app.setControllers({
+				'block1': Block1Controller
+			});
+			app.run();
+		})
+	</script>
+</head>
+<body>
+<div id="block1">
+	<div orange-id="elem1" style="width: 50px; height: 60px">
+	</div>
+	<div orange-id="elem1" style="width: 50px; height: 60px">
+	</div>
+	<button orange-id="btn" o-data="#ff00ff">Press</button>
+</div>
+</body>
+</html>

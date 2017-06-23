@@ -1,0 +1,25 @@
+<html>
+<head>
+	<title>Test 1</title>
+	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src="../dist/orange.min.js"></script>
+	<script type="text/javascript">
+		function Block1Controller(els) {
+			els.elem1.$().text(els.elem1.g(0).data);
+		}
+		$(document).ready(function () {
+			let app = new Orange();
+			app.setControllers({
+				'block1': Block1Controller
+			});
+			app.run();
+		})
+	</script>
+</head>
+<body>
+<div id="block1">
+	<div orange-id="elem1" o-data="Some data">
+	</div>
+</div>
+</body>
+</html>
