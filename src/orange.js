@@ -2,8 +2,9 @@
 
 import OrangeElements from './orange-elements';
 import OrangeElement from './orange-element';
+import { findOrangeChilds } from './helpers';
 
-class Orange {
+export default class Orange {
 	constructor() {
 		this.controllers = {};
 		this.preloader = null;
@@ -40,38 +41,19 @@ class Orange {
 			if ($('#' + i).length) {
 				console.log(i);
 				let block = $('#' + i);
-				(this.controllers[i].bind(this, this.findOrangeChilds(block)))();
+				this.controllers[i].block = block;
+				this.controllers[i].o = findOrangeChilds(block, this.controllers[i]);
+				this.app = this;
+				this.controllers[i].mount();
+				if (this.controllers[i].update) {
+					this.controllers[i].update();
+				}
 			}
 		}
 	}
 
-	findOrangeChilds(block) {
-		console.log('Work');
-		let src = {};
-		let result = new Proxy(src, {
-			get(target, property) {
-				if (!(property in target)) {
-					return new OrangeElements();
-				}
-				return target[property];
-			}
-		});
-		let blockChilds = block.find('[orange-id]').addBack();
-		blockChilds.each(function(index, el) {
-			let element = $(this);
-			let orangeId = element.attr('orange-id');
-			if (orangeId) {
-				if (src[orangeId] === undefined) {
-					result[orangeId] = new OrangeElements();	
-				}
-				result[orangeId].push(new OrangeElement(element));
-			}
-		});
-
-		return result;
-	}
 }
 
 window.Orange = Orange;
 
-export default Orange;
+// export default Orange;

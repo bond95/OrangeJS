@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Test 2</title>
+	<title>Test 4</title>
 	<script type="text/javascript" src="jquery.min.js"></script>
 	<script type="text/javascript" src="../dist/orange.min.js"></script>
 	<script type="text/javascript">
@@ -8,7 +8,12 @@
 			this.mount = function () {
 				var that = this;
 				this.o.btn.click(function () {
-					that.o.elem1.$().css('background-color', this.data);
+					that.o.elem2.append('<div orange-id="elem1" style="width: 50px; height: 60px"></div>');
+				});
+			};
+			this.update = function () {
+				this.o.elem1.click(function () {
+					this.$().css('background-color', '#F0F');
 				});
 			};
 		}
@@ -23,11 +28,13 @@
 </head>
 <body>
 <div id="block1">
-	<div orange-id="elem1" style="width: 50px; height: 60px">
+	<div orange-id="elem2">
+		<div orange-id="elem1" style="width: 50px; height: 60px">
+		</div>
+		<div orange-id="elem1" style="width: 50px; height: 60px">
+		</div>
 	</div>
-	<div orange-id="elem1" style="width: 50px; height: 60px">
-	</div>
-	<button orange-id="btn" o-data="#ff00ff">Press</button>
+	<button orange-id="btn">Add</button>
 </div>
 </body>
 </html>

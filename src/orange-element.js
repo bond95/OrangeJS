@@ -1,6 +1,9 @@
+import { findOrangeChilds } from './helpers';
+
 export default class OrangeElement {
-	constructor(element) {
+	constructor(element, controller) {
 		this.jElement = element;
+		this.controller = controller;
 		$.each(this.jElement.get(0).attributes, function(index, el) {
 			if (el.name.substring(0, 2) == 'o-') {
 				Object.assign(this, {
@@ -17,8 +20,12 @@ export default class OrangeElement {
 	}
 
 	append(element) {
-		var jElement = new OrangeElement($(element));
-		this.jElement.append(jElement.$());
-		return jElement;
+		this.jElement.append($(element));
+		if (this.controller && this.controller.update) {
+			this.controller.o = findOrangeChilds(this.controller.block, this.controller);
+			this.controller.update();
+		}
+		// var jElement = new OrangeElement($(element));
+		// return jElement;
 	}
 }

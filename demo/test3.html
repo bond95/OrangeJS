@@ -4,16 +4,18 @@
 	<script type="text/javascript" src="jquery.min.js"></script>
 	<script type="text/javascript" src="../dist/orange.min.js"></script>
 	<script type="text/javascript">
-		function Block1Controller(els) {
-			els.btn.click(function () {
-				console.log(this);
-				els.elem1.$().css('background-color', this.data);
-			});
+		function Block1Controller() {
+			this.mount = function () {
+				var that = this;
+				this.o.btn.click(function () {
+					that.o.elem1.$().css('background-color', this.data);
+				});
+			}
 		}
 		$(document).ready(function () {
 			let app = new Orange();
 			app.setControllers({
-				'block1': Block1Controller
+				'block1': new Block1Controller()
 			});
 			app.run();
 		})

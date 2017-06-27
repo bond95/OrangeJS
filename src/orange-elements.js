@@ -1,9 +1,11 @@
 import OrangeElement from './orange-element';
+import { findOrangeChilds } from './helpers';
 
 export default class OrangeElements {
-	constructor() { 
+	constructor(controller) { 
 		this.elements = [];
 		this.parameters = [];
+		this.controller = controller;
 	}
 
 	g(index) {
@@ -45,9 +47,24 @@ export default class OrangeElements {
 	}
 
 	click(callback) {
+		this.$().off('click');
 		this.$().click(function () {
-			let callback2 = callback.bind(new OrangeElement($(this)));
+			let callback2 = callback.bind(new OrangeElement($(this), this.controller));
+			// console.log(new OrangeElement($(this)));
 			callback2();
 		});
+	}
+
+	append(element) {
+		const arr = [];
+		for (let i = 0; i < this.elements.length; i++) {
+			arr.push(this.elements[i].$().get(0));
+		}
+		$(arr).append(element);
+		if (this.controller && this.controller.update) {
+			this.controller.o = findOrangeChilds(this.controller.block, this.controller);
+			this.controller.update();
+		}
+
 	}
 }

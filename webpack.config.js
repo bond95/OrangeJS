@@ -3,7 +3,7 @@ var webpack = require("webpack");
 
 module.exports = {
 	entry: {
-		app: __dirname + '/src/',
+		'orange-lib': __dirname + '/src/index.js',
 	},
 	output: {
 		filename: 'orange.min.js',

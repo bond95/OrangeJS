@@ -14,14 +14,14 @@ app.setPreloader(function () {
 	//Some actions before start
 });
 app.setControllers({
-    'block1': Block1Controller,		//'block1' is id of DOM element (block), Block1Controller is a function
-    'block2': Block2Controller
+    'block1': new Block1Controller(),		//'block1' is id of DOM element (block), Block1Controller is a function
+    'block2': new Block2Controller()
 });
 app.run();
 ```
 
 ## Controllers
 
-Controller is a function that get OrangeElements as parameter.
+Controller is a class that must have `mount` method, and optionally `update` method.
 Every child DOM element of parent blcok, that need to use, must have `orange-id` as attribute (a few elements can have same `orange-id`), elements with `orange-id` are called OrangeElements.
 
