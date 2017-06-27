@@ -17,11 +17,14 @@ export default class OrangeElements {
 			$.each(element.$().get(0).attributes, function(index, el) {
 				if (el.name.substring(0, 2) == 'o-') {
 					this.parameters.push(el.name.substring(2, (el.name.length)));
-					Object.assign(this, {
-			            get [el.name.substring(2, (el.name.length))]() {
-			                return el.value;
-			            }
-			        });
+					Object.defineProperty(this, el.name.substring(2, (el.name.length)), {
+				        set: function (value) {
+							element.$().attr(el.name, value);
+				        },
+				        get: function () {
+				        	return el.value;
+				        }
+				    });
 				}
 			}.bind(this));
 		} else {
@@ -53,6 +56,15 @@ export default class OrangeElements {
 			// console.log(new OrangeElement($(this)));
 			callback2();
 		});
+	}
+
+	on(action, callback) {
+		this.$().off(action);
+		this.$().on(action, function () {
+			let callback2 = callback.bind(new OrangeElement($(this), this.controller));
+			// console.log(new OrangeElement($(this)));
+			callback2();
+		});		
 	}
 
 	append(element) {

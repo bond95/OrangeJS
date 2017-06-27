@@ -1,0 +1,47 @@
+<html>
+<head>
+	<title>Test 4</title>
+	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src="../dist/orange.min.js"></script>
+	<script type="text/javascript">
+		function Block1Controller() {
+			this.mount = function () {
+				var that = this;
+				this.o.btn.click(function () {
+					that.o.elem2.append('<div orange-id="elem1" style="width: 50px; height: 60px"></div>');
+				});
+				this.o.radioElem.on('change', function () {
+					that.o.btn.color = this.$().val();
+				});
+			};
+			this.update = function () {
+				var that = this;
+				this.o.elem1.click(function () {
+					this.$().css('background-color', that.o.btn.color);
+				});
+			};
+		}
+		$(document).ready(function () {
+			let app = new Orange();
+			app.setControllers({
+				'block1': new Block1Controller()
+			});
+			app.run();
+		})
+	</script>
+</head>
+<body>
+<div id="block1">
+	<div orange-id="elem2">
+		<div orange-id="elem1" style="width: 50px; height: 60px">
+		</div>
+		<div orange-id="elem1" style="width: 50px; height: 60px">
+		</div>
+	</div>
+	<button orange-id="btn" o-color="#F0F">Add</button>
+	<input orange-id="radioElem" type="radio" name="color" value="#000">Black <br/>
+	<input orange-id="radioElem" type="radio" name="color" value="#0F0">Green <br />
+	<input orange-id="radioElem" type="radio" name="color" value="#00F">Blue <br />
+</div>
+</body>
+</html>
