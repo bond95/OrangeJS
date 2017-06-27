@@ -1,5 +1,5 @@
 # OrangeLib
-Small front-end library for fast working with DOM elements and their attributes
+Minimalistic & fast jQuery-based front-end library for dynamic DOM manipulations.
 
 ## Installation
 
