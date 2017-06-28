@@ -19,7 +19,10 @@ export default class OrangeElements {
 					this.parameters.push(el.name.substring(2, (el.name.length)));
 					Object.defineProperty(this, el.name.substring(2, (el.name.length)), {
 				        set: function (value) {
-							element.$().attr(el.name, value);
+				        	if (value) {
+				        		element[el.name] = value;
+								element.$().attr(el.name, value);
+							}
 				        },
 				        get: function () {
 				        	return el.value;

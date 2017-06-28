@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Test 4</title>
+	<title>Test 5</title>
 	<script type="text/javascript" src="jquery.min.js"></script>
 	<script type="text/javascript" src="../dist/orange.min.js"></script>
 	<script type="text/javascript">
@@ -12,6 +12,8 @@
 				});
 				this.o.radioElem.on('change', function () {
 					that.o.btn.color = this.$().val();
+					console.log(that.o.btn.color);
+					console.log(that.o.btn.g(0).color)
 				});
 			};
 			this.update = function () {
