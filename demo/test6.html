@@ -1,12 +1,15 @@
 <html>
 <head>
-	<title>Test 1</title>
+	<title>Test 6</title>
 	<script type="text/javascript" src="jquery.min.js"></script>
 	<script type="text/javascript" src="../dist/orange.min.js"></script>
 	<script type="text/javascript">
 		function Block1Controller() {
 			this.mount = function () {
-				this.o.elem1.$.text(this.o.elem1.data);
+				const that = this;
+				this.o.textElem.on('change', function () {
+					that.o.result.value = this.value;
+				});
 			};
 		}
 		$(document).ready(function () {
@@ -20,8 +23,8 @@
 </head>
 <body>
 <div id="block1">
-	<div orange-id="elem1" o-data="Some data">
-	</div>
+	<input orange-id="result" type="text" /><br/><br />
+	<input orange-id="textElem" type="text" /><br/>
 </div>
 </body>
 </html>

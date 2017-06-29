@@ -8,16 +8,16 @@
 			this.mount = function () {
 				var that = this;
 				this.o.btn.click(function () {
-					that.o.elem1.$().css('background-color', this.data);
+					that.o.elem1.$.css('background-color', this.data);
 				});
 			}
 		}
 		$(document).ready(function () {
-			let app = new Orange();
-			app.setControllers({
-				'block1': new Block1Controller()
+			let app = new Orange({
+				controllers: {
+					'block1': Block1Controller
+				}
 			});
-			app.run();
 		})
 	</script>
 </head>

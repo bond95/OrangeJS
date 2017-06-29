@@ -6,6 +6,15 @@ export default class OrangeElements {
 		this.elements = [];
 		this.parameters = [];
 		this.controller = controller;
+		Object.defineProperty(this, '$', {
+	        get: function () {
+	        	const arr = [];
+				for (let i = 0; i < this.elements.length; i++) {
+					arr.push(this.elements[i].$.get(0));
+				}
+				return $(arr);
+	        }
+	    });
 	}
 
 	g(index) {
@@ -14,14 +23,14 @@ export default class OrangeElements {
 
 	push(element) {
 		if (this.elements.length == 0) {
-			$.each(element.$().get(0).attributes, function(index, el) {
+			$.each(element.$.get(0).attributes, function(index, el) {
 				if (el.name.substring(0, 2) == 'o-') {
 					this.parameters.push(el.name.substring(2, (el.name.length)));
 					Object.defineProperty(this, el.name.substring(2, (el.name.length)), {
 				        set: function (value) {
 				        	if (value) {
 				        		element[el.name] = value;
-								element.$().attr(el.name, value);
+								element.$.attr(el.name, value);
 							}
 				        },
 				        get: function () {
@@ -30,6 +39,22 @@ export default class OrangeElements {
 				    });
 				}
 			}.bind(this));
+			if (element.$.prop('tagName') === 'INPUT') {
+				Object.defineProperty(this, 'value', {
+			        set: function (value) {
+			        	if (value) {
+							element.$.val(value);
+						}
+			        },
+			        get: function () {
+			        	return element.$.val();
+			        }
+			    });
+				// this.value = this.$.val();
+				// this.$.change(function() {
+				// 	that.value = that.$.val();
+				// });
+			}
 		} else {
 			if (this.parameters.length > 0) {
 				for (let i in this.parameters) {
@@ -44,17 +69,17 @@ export default class OrangeElements {
 		return this.elements.length;
 	}
 
-	$() {
-		const arr = [];
-		for (let i = 0; i < this.elements.length; i++) {
-			arr.push(this.elements[i].$().get(0));
-		}
-		return $(arr);
-	}
+	// $ {
+	// 	const arr = [];
+	// 	for (let i = 0; i < this.elements.length; i++) {
+	// 		arr.push(this.elements[i].$.get(0));
+	// 	}
+	// 	return $(arr);
+	// }
 
 	click(callback) {
-		this.$().off('click');
-		this.$().click(function () {
+		this.$.off('click');
+		this.$.click(function () {
 			let callback2 = callback.bind(new OrangeElement($(this), this.controller));
 			// console.log(new OrangeElement($(this)));
 			callback2();
@@ -62,8 +87,8 @@ export default class OrangeElements {
 	}
 
 	on(action, callback) {
-		this.$().off(action);
-		this.$().on(action, function () {
+		this.$.off(action);
+		this.$.on(action, function () {
 			let callback2 = callback.bind(new OrangeElement($(this), this.controller));
 			// console.log(new OrangeElement($(this)));
 			callback2();
@@ -73,7 +98,7 @@ export default class OrangeElements {
 	append(element) {
 		const arr = [];
 		for (let i = 0; i < this.elements.length; i++) {
-			arr.push(this.elements[i].$().get(0));
+			arr.push(this.elements[i].$.get(0));
 		}
 		$(arr).append(element);
 		if (this.controller && this.controller.update) {

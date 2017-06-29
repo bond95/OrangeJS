@@ -11,24 +11,22 @@
 					that.o.elem2.append('<div orange-id="elem1" style="width: 50px; height: 60px"></div>');
 				});
 				this.o.radioElem.on('change', function () {
-					that.o.btn.color = this.$().val();
-					console.log(that.o.btn.color);
-					console.log(that.o.btn.g(0).color)
+					that.o.btn.color = this.value;
 				});
 			};
 			this.update = function () {
 				var that = this;
 				this.o.elem1.click(function () {
-					this.$().css('background-color', that.o.btn.color);
+					this.$.css('background-color', that.o.btn.color);
 				});
 			};
 		}
 		$(document).ready(function () {
-			let app = new Orange();
-			app.setControllers({
-				'block1': new Block1Controller()
+			let app = new Orange({
+				controllers: {
+					'block1': Block1Controller
+				}
 			});
-			app.run();
 		})
 	</script>
 </head>

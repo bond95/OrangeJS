@@ -5,9 +5,26 @@ import OrangeElement from './orange-element';
 import { findOrangeChilds } from './helpers';
 
 export default class Orange {
-	constructor() {
+	constructor({ preloader, controllers }) {
+		if (preloader) {
+			preloader();
+		}
 		this.controllers = {};
-		this.preloader = null;
+		for (let i in controllers) {
+			if ($('#' + i).length) {
+				// console.log(i);
+				let block = $('#' + i);
+				this.controllers[i] = new (controllers[i])();
+				this.controllers[i].block = block;
+				this.controllers[i].o = findOrangeChilds(block, this.controllers[i]);
+				this.controllers[i].app = this;
+				this.controllers[i].mount();
+				if (this.controllers[i].update) {
+					this.controllers[i].update();
+				}
+			}
+		}
+		// this.preloader = null;
 		this.plugins = [];
 	}
 
@@ -30,27 +47,27 @@ export default class Orange {
 	}
 
 	dynamicConnect(element, controller) {
-		controller(this.findOrangeChilds(element.$()));
+		controller(findOrangeChilds(element.$()));
 	}
 
-	run() {
-		if (this.preloader !== null) {
-			this.preloader();
-		}
-		for (let i in this.controllers) {
-			if ($('#' + i).length) {
-				console.log(i);
-				let block = $('#' + i);
-				this.controllers[i].block = block;
-				this.controllers[i].o = findOrangeChilds(block, this.controllers[i]);
-				this.app = this;
-				this.controllers[i].mount();
-				if (this.controllers[i].update) {
-					this.controllers[i].update();
-				}
-			}
-		}
-	}
+	// run() {
+	// 	if (this.preloader !== null) {
+	// 		this.preloader();
+	// 	}
+	// 	for (let i in this.controllers) {
+	// 		if ($('#' + i).length) {
+	// 			console.log(i);
+	// 			let block = $('#' + i);
+	// 			this.controllers[i].block = block;
+	// 			this.controllers[i].o = findOrangeChilds(block, this.controllers[i]);
+	// 			this.controllers[i].app = this;
+	// 			this.controllers[i].mount();
+	// 			if (this.controllers[i].update) {
+	// 				this.controllers[i].update();
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 }
 

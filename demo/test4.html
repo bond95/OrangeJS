@@ -13,16 +13,16 @@
 			};
 			this.update = function () {
 				this.o.elem1.click(function () {
-					this.$().css('background-color', '#F0F');
+					this.$.css('background-color', '#F0F');
 				});
 			};
 		}
 		$(document).ready(function () {
-			let app = new Orange();
-			app.setControllers({
-				'block1': new Block1Controller()
+			let app = new Orange({
+				controllers: {
+					'block1': Block1Controller
+				}
 			});
-			app.run();
 		})
 	</script>
 </head>

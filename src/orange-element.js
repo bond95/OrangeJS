@@ -2,14 +2,14 @@ import { findOrangeChilds } from './helpers';
 
 export default class OrangeElement {
 	constructor(element, controller) {
-		this.jElement = element;
+		this.$ = element;
 		this.controller = controller;
 		const that = this;
-		$.each(this.jElement.get(0).attributes, function(index, el) {
+		$.each(this.$.get(0).attributes, function(index, el) {
 			if (el.name.substring(0, 2) == 'o-') {
 				Object.defineProperty(this, el.name.substring(2, (el.name.length)), {
 			        set: function (value) {
-						that.jElement.attr(el.name, value);
+						that.$.attr(el.name, value);
 			        },
 			        get: function () {
 			        	return el.value;
@@ -17,11 +17,25 @@ export default class OrangeElement {
 			    });
 			}
 		}.bind(this));
+		if (this.$.prop('tagName') === 'INPUT') {
+			Object.defineProperty(this, 'value', {
+		        set: function (value) {
+					that.$.val(value);
+		        },
+		        get: function () {
+		        	return that.$.val();
+		        }
+		    });
+			// this.value = this.$.val();
+			// this.$.change(function() {
+			// 	that.value = that.$.val();
+			// });
+		}
 	}
 
-	$() {
-		return this.jElement;
-	}
+	// $() {
+	// 	return this.$;
+	// }
 
 	append(element) {
 		this.jElement.append($(element));
