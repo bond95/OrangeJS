@@ -3,6 +3,7 @@ import { findOrangeChilds } from './helpers';
 export default class OrangeElement {
 	constructor(element, controller) {
 		this.$ = element;
+		this.dom = element.get(0);
 		this.controller = controller;
 		const that = this;
 		$.each(this.$.get(0).attributes, function(index, el) {
@@ -26,16 +27,8 @@ export default class OrangeElement {
 		        	return that.$.val();
 		        }
 		    });
-			// this.value = this.$.val();
-			// this.$.change(function() {
-			// 	that.value = that.$.val();
-			// });
 		}
 	}
-
-	// $() {
-	// 	return this.$;
-	// }
 
 	append(element) {
 		this.jElement.append($(element));
@@ -43,7 +36,5 @@ export default class OrangeElement {
 			this.controller.o = findOrangeChilds(this.controller.block, this.controller);
 			this.controller.update();
 		}
-		// var jElement = new OrangeElement($(element));
-		// return jElement;
 	}
 }

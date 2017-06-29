@@ -40,6 +40,7 @@ export default class OrangeElements {
 				}
 			}.bind(this));
 			if (element.$.prop('tagName') === 'INPUT') {
+				this.parameters.push('value');
 				Object.defineProperty(this, 'value', {
 			        set: function (value) {
 			        	if (value) {
@@ -50,11 +51,10 @@ export default class OrangeElements {
 			        	return element.$.val();
 			        }
 			    });
-				// this.value = this.$.val();
-				// this.$.change(function() {
-				// 	that.value = that.$.val();
-				// });
 			}
+			this.parameters.push('dom');
+			this.dom = element.dom;
+
 		} else {
 			if (this.parameters.length > 0) {
 				for (let i in this.parameters) {
@@ -69,19 +69,10 @@ export default class OrangeElements {
 		return this.elements.length;
 	}
 
-	// $ {
-	// 	const arr = [];
-	// 	for (let i = 0; i < this.elements.length; i++) {
-	// 		arr.push(this.elements[i].$.get(0));
-	// 	}
-	// 	return $(arr);
-	// }
-
 	click(callback) {
 		this.$.off('click');
 		this.$.click(function () {
 			let callback2 = callback.bind(new OrangeElement($(this), this.controller));
-			// console.log(new OrangeElement($(this)));
 			callback2();
 		});
 	}
@@ -90,7 +81,6 @@ export default class OrangeElements {
 		this.$.off(action);
 		this.$.on(action, function () {
 			let callback2 = callback.bind(new OrangeElement($(this), this.controller));
-			// console.log(new OrangeElement($(this)));
 			callback2();
 		});		
 	}
