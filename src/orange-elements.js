@@ -6,6 +6,16 @@ export default class OrangeElements {
 		this.elements = [];
 		this.parameters = [];
 		this.controller = controller;
+		this.nonProxyChildren = {};
+		this.children = new Proxy(this.nonProxyChildren, {
+			get(target, property) {
+				if (!(property in target)) {
+					console.error('Can\'t find child with id ', property);
+					return null;
+				}
+				return target[property];
+			}
+		});
 		Object.defineProperty(this, '$', {
 	        get: function () {
 	        	const arr = [];
@@ -95,6 +105,34 @@ export default class OrangeElements {
 			this.controller.o = findOrangeChilds(this.controller.block, this.controller);
 			this.controller.update();
 		}
+	}
 
+	insertBefore(element) {
+		const arr = [];
+		for (let i = 0; i < this.elements.length; i++) {
+			arr.push(this.elements[i].$.get(0));
+		}
+		$(arr).insertBefore(element.$);
+		this.controller = element.controller;
+		if (this.controller && this.controller.update) {
+			this.controller.o = findOrangeChilds(this.controller.block, this.controller);
+			this.controller.update();
+		}
+	}
+
+	addChildren(element) {
+		const orangeId = element.$.attr('orange-id');
+		if (this.nonProxyChildren[orangeId] === undefined) {
+			this.children[orangeId] = new OrangeElements(this.controller);	
+		}
+		this.children[orangeId].push(element);
+	}
+
+	copy() {
+		const res = new OrangeElements(null);
+		for (let i = 0; i < this.elements.length; i++) {
+			res.push(this.elements[i].copy());
+		}
+		return res;
 	}
 }

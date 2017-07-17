@@ -1,10 +1,21 @@
 import { findOrangeChilds } from './helpers';
+import OrangeElements from './orange-elements';
 
 export default class OrangeElement {
 	constructor(element, controller) {
 		this.$ = element;
 		this.dom = element.get(0);
 		this.controller = controller;
+		this.nonProxyChildren = {};
+		this.children = new Proxy(this.nonProxyChildren, {
+			get(target, property) {
+				if (!(property in target)) {
+					console.error('Can\'t find child with id ', property);
+					return null;
+				}
+				return target[property];
+			}
+		});
 		const that = this;
 		$.each(this.$.get(0).attributes, function(index, el) {
 			if (el.name.substring(0, 2) == 'o-') {
@@ -31,10 +42,46 @@ export default class OrangeElement {
 	}
 
 	append(element) {
-		this.jElement.append($(element));
+		var jElement = null;
+		if (element instanceof OrangeElement) {
+			jElement = element;
+			jElement.controller = this.controller;
+		} else {
+			jElement = new OrangeElement($(element), this.controller);
+		}
+		this.$.append(jElement.$);
+		this.controller.o = findOrangeChilds(this.controller.block, this.controller);
 		if (this.controller && this.controller.update) {
-			this.controller.o = findOrangeChilds(this.controller.block, this.controller);
 			this.controller.update();
 		}
+		return jElement;
+	}
+
+	addChildren(element) {
+		const orangeId = element.$.attr('orange-id');
+		if (this.nonProxyChildren[orangeId] === undefined) {
+			this.children[orangeId] = new OrangeElements(this.controller);	
+		}
+		this.children[orangeId].push(element);
+	}
+
+	clone() {
+		const element = new OrangeElement(this.$.clone(), null);
+		for (let i in this.children) {
+			element.children[i] = this.children[i].copy();
+		}
+		return element;
+	}
+
+	insertBefore(element) {
+		var jElement = null;
+		jElement = element;
+		this.controller = jElement.controller;
+		this.$.insertBefore(jElement.$);
+		this.controller.o = findOrangeChilds(this.controller.block, this.controller);
+		if (this.controller && this.controller.update) {
+			this.controller.update();
+		}
+		return this;
 	}
 }

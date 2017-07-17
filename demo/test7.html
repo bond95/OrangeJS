@@ -1,0 +1,52 @@
+<html>
+<head>
+	<title>Test 7</title>
+	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src="../dist/orange.min.js"></script>
+	<script type="text/javascript">
+		function Block1Controller() {
+			this.mount = function () {
+				const that = this;
+				this.o.list1.g(1).children.item.$.css('background-color', '#FF0');
+				this.o.list2.children.item.$.css('background-color', '#F00');
+				this.o.list1.children.item.children.subitem.$.css('background-color', '#0F0');
+			};
+		}
+		$(document).ready(function () {
+			let app = new Orange({
+				controllers: {
+					'block1': Block1Controller
+				}
+			});
+		})
+	</script>
+</head>
+<body>
+<div id="block1">
+	<ul orange-id="list1">
+		<li orange-id="item">asdfasdf</li>
+		<li orange-id="item">asdfasdf</li>
+		<li orange-id="item">asdfasdf</li>
+		<li orange-id="item">asdfasdf<span orange-id="subitem">sdfsdf</span></li>
+	</ul>
+	<ul orange-id="list1">
+		<li orange-id="item">asdfasdf<span orange-id="subitem">sdfsdf</span></li>
+		<li orange-id="item">asdfasdf</li>
+		<li orange-id="item">asdfasdf<span orange-id="subitem">sdfsdf</span></li>
+		<li orange-id="item">asdfasdf</li>
+	</ul>
+	<ul orange-id="list2">
+		<li orange-id="item">asdfasdf</li>
+		<li orange-id="item">asdfasdf</li>
+		<li orange-id="item">asdfasdf</li>
+		<li orange-id="item">asdfasdf</li>
+	</ul>
+	<ul orange-id="list2">
+		<li orange-id="item">asdfasdf</li>
+		<li orange-id="item">asdfasdf</li>
+		<li orange-id="item">asdfasdf</li>
+		<li orange-id="item">asdfasdf</li>
+	</ul>
+</div>
+</body>
+</html>
