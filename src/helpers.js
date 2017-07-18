@@ -2,7 +2,6 @@ import OrangeElements from './orange-elements';
 import OrangeElement from './orange-element';
 
 export function findOrangeChilds(block, controller) {
-	console.log('Work');
 	let src = {};
 	let result = new Proxy(src, {
 		get(target, property) {
@@ -16,31 +15,36 @@ export function findOrangeChilds(block, controller) {
 	blockChilds.each(function(index, el) {
 		let element = $(this);
 		let orangeId = element.attr('orange-id');
-		console.log(orangeId);
 		if (orangeId) {
 			if (src[orangeId] === undefined) {
 				result[orangeId] = new OrangeElements(controller);	
 			}
 			const oElement = new OrangeElement(element, controller);
-			let parent = element.parents('[orange-id]');
-			if (parent.length) {
-				parent = parent[0];
-				console.log('parent', $(parent).attr('orange-id'));
-				if ($(parent).attr('orange-id')) {
-					const orangeParent = result[$(parent).attr('orange-id')];
-					for (let i = 0; i < orangeParent.length; i++) {
-						if (orangeParent.g(i).dom == parent) {
-							orangeParent.g(i).addChildren(oElement);
-							break;
-						}
-					}
-					orangeParent.addChildren(oElement);
-					console.log(orangeParent);
-				}
-			}
 			result[orangeId].push(new OrangeElement(element, controller));
 		}
 	});
+	for (let i in src) {
+		for (let j = 0; j < src[i].length; j++) {
+			let parent = src[i].g(j).$.parents('[orange-id]');
+			if (parent.length) {
+				parent = parent[0];
+				if ($(parent).attr('orange-id')) {
+					const orangeParent = result[$(parent).attr('orange-id')];
+					for (let o = 0; o < orangeParent.length; o++) {
+						if (orangeParent.g(o).dom == parent) {
+							orangeParent.g(o).addChildren(result[i].g(j));
+							break;
+						}
+					}
+					orangeParent.addChildren(result[i].g(j));
+				}
+			}
+		}
+	}
+
+	for (let i in src) {
+		src[i].recalculateChildren();
+	}
 
 	return result;
 }

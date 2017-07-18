@@ -47,7 +47,6 @@ export default class Orange {
 	}
 
 	dynamicConnect(element, controller) {
-		console.log('dynamic', element);
 		controller(findOrangeChilds(element.$));
 	}
 

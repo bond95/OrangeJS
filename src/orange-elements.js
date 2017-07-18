@@ -72,6 +72,14 @@ export default class OrangeElements {
 				}
 			}
 		}
+		for (let i in element.children) {
+			if (this.nonProxyChildren[i] === undefined) {
+				this.children[i] = new OrangeElements(this.controller);	
+			}
+			for (let j = 0; j < element.children[i].length; j++) {
+				this.children[i].push(element.children[i].g(j));
+			}
+		}
 		this.elements.push(element);
 	}
 
@@ -134,5 +142,19 @@ export default class OrangeElements {
 			res.push(this.elements[i].copy());
 		}
 		return res;
+	}
+
+	recalculateChildren() {
+		for (let j in this.elements) {
+			let element = this.elements[j];
+			for (let i in element.children) {
+				if (this.nonProxyChildren[i] === undefined) {
+					this.children[i] = new OrangeElements(this.controller);	
+				}
+				for (let j = 0; j < element.children[i].length; j++) {
+					this.children[i].push(element.children[i].g(j));
+				}
+			}
+		}
 	}
 }
