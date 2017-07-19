@@ -32,6 +32,11 @@ export default class OrangeElements {
 	}
 
 	push(element) {
+		for (let i in this.elements) {
+			if (element.dom == this.elements[i].dom) {
+				return;
+			}
+		}
 		if (this.elements.length == 0) {
 			$.each(element.$.get(0).attributes, function(index, el) {
 				if (el.name.substring(0, 2) == 'o-') {
@@ -89,9 +94,9 @@ export default class OrangeElements {
 
 	click(callback) {
 		this.$.off('click');
-		this.$.click(function () {
+		this.$.click(function (e) {
 			let callback2 = callback.bind(new OrangeElement($(this), this.controller));
-			callback2();
+			callback2(e);
 		});
 	}
 
@@ -136,10 +141,10 @@ export default class OrangeElements {
 		this.children[orangeId].push(element);
 	}
 
-	copy() {
+	clone() {
 		const res = new OrangeElements(null);
 		for (let i = 0; i < this.elements.length; i++) {
-			res.push(this.elements[i].copy());
+			res.push(this.elements[i].clone());
 		}
 		return res;
 	}
@@ -154,7 +159,9 @@ export default class OrangeElements {
 				for (let j = 0; j < element.children[i].length; j++) {
 					this.children[i].push(element.children[i].g(j));
 				}
+				this.children[i].recalculateChildren();
 			}
+
 		}
 	}
 }

@@ -68,7 +68,7 @@ export default class OrangeElement {
 	clone() {
 		const element = new OrangeElement(this.$.clone(), null);
 		for (let i in this.children) {
-			element.children[i] = this.children[i].copy();
+			element.children[i] = this.children[i].clone();
 		}
 		return element;
 	}
