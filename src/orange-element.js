@@ -1,4 +1,4 @@
-import { findOrangeChilds } from './helpers';
+import { findOrangeChilds, findChildren } from './helpers';
 import OrangeElements from './orange-elements';
 
 export default class OrangeElement {
@@ -67,9 +67,7 @@ export default class OrangeElement {
 
 	clone() {
 		const element = new OrangeElement(this.$.clone(), null);
-		for (let i in this.children) {
-			element.children[i] = this.children[i].clone();
-		}
+		element.children = findChildren(element.$, null); 
 		return element;
 	}
 
