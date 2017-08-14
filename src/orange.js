@@ -25,7 +25,7 @@ export default class Orange {
 			}
 		}
 		// this.preloader = null;
-		this.plugins = [];
+		this.plugins = {};
 	}
 
 	setControllers(controllers) {
@@ -43,7 +43,8 @@ export default class Orange {
 	}
 
 	connectPlugin(plugin) {
-		this.plugins.push(new plugin(this));
+		const pl = new plugin(this);
+		this.plugins[pl.constructor.name] = pl;
 	}
 
 	dynamicConnect(element, controller) {
