@@ -12,6 +12,8 @@
 				});
 			}
 		}
+		Block1Controller.prototype = Object.create(OrangeController);
+		Block1Controller.prototype.constructor = Block1Controller;
 		$(document).ready(function () {
 			let app = new Orange({
 				controllers: {

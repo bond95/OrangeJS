@@ -1,0 +1,77 @@
+<html>
+<head>
+	<title>Test 7</title>
+	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src="../dist/orange.min.js"></script>
+	<script type="text/javascript">
+		function Block1Controller() {
+			this.mount = function () {
+				const that = this;
+				this.o.item.click(function () {
+					that.emit('itemClicked', this);
+					this.$.remove();
+				});
+			};
+		}
+		Block1Controller.prototype = Object.create(OrangeController);
+		Block1Controller.prototype.constructor = Block1Controller;
+		function Block2Controller() {
+			this.mount = function () {
+				const that = this;
+				this.on('itemClicked', function (item) {
+					that.o.list1.append(item.$);
+				});
+			};
+		}
+		Block2Controller.prototype = Object.create(OrangeController);
+		Block2Controller.prototype.constructor = Block2Controller;
+		class Plugin1 extends OrangePlugin {
+			constructor () {
+				super();
+				this.handlers = {};
+			}
+			controllerHandler(controller) {
+				const that = this;
+				controller.on = function (action, handler) {
+					if (that.handlers[action] === undefined) {
+						that.handlers[action] = [];
+					}
+					that.handlers[action].push(handler);
+				}
+				controller.emit = function (action, params) {
+					if (that.handlers[action] !== undefined) {
+						for (let i in that.handlers[action]) {
+							that.handlers[action][i](params);
+						}
+					}
+				}
+			}
+		}
+		$(document).ready(function () {
+			let app = new Orange({
+				controllers: {
+					'block1': Block1Controller,
+					'block2': Block2Controller
+				},
+				plugins: {
+					'plugin1': Plugin1
+				}
+			});
+		})
+	</script>
+</head>
+<body>
+<div id="block1">
+	<ul orange-id="list1">
+		<li orange-id="item">asdfasdf</li>
+		<li orange-id="item">asdfasdf</li>
+		<li orange-id="item">asdfasdf</li>
+		<li orange-id="item">asdfasdf<span orange-id="subitem">sdfsdf</span></li>
+	</ul>
+</div>
+<div id="block2">
+	<ul orange-id="list1">
+	</ul>
+</div>
+</body>
+</html>

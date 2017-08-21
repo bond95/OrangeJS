@@ -47,7 +47,7 @@ export default class OrangeElement {
 			jElement = element;
 			jElement.controller = this.controller;
 		} else {
-			jElement = new OrangeElement($(element), this.controller);
+			jElement = new OrangeElement($(element).clone(), this.controller);
 		}
 		this.$.append(jElement.$);
 		this.controller.o = findOrangeChilds(this.controller.block, this.controller);

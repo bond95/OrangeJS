@@ -113,7 +113,11 @@ export default class OrangeElements {
 		for (let i = 0; i < this.elements.length; i++) {
 			arr.push(this.elements[i].$.get(0));
 		}
-		$(arr).append(element);
+		if (typeof element === 'string') {
+			$(arr).append(element);
+		} else {
+			$(arr).append(element.clone());
+		}
 		if (this.controller && this.controller.update) {
 			this.controller.o = findOrangeChilds(this.controller.block, this.controller);
 			this.controller.update();
