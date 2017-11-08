@@ -50,6 +50,22 @@ export default class OrangeElement {
 			jElement = new OrangeElement($(element).clone(), this.controller);
 		}
 		this.$.append(jElement.$);
+		if (this.controller && this.controller.update) {
+			this.controller.o = findOrangeChilds(this.controller.block, this.controller);
+			this.controller.update();
+		}
+		return jElement;
+	}
+
+	prepend(element) {
+		var jElement = null;
+		if (element instanceof OrangeElement) {
+			jElement = element;
+			jElement.controller = this.controller;
+		} else {
+			jElement = new OrangeElement($(element).clone(), this.controller);
+		}
+		this.$.prepend(jElement.$);
 		this.controller.o = findOrangeChilds(this.controller.block, this.controller);
 		if (this.controller && this.controller.update) {
 			this.controller.update();

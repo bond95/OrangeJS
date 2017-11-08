@@ -124,6 +124,22 @@ export default class OrangeElements {
 		}
 	}
 
+	prepend(element) {
+		const arr = [];
+		for (let i = 0; i < this.elements.length; i++) {
+			arr.push(this.elements[i].$.get(0));
+		}
+		if (typeof element === 'string') {
+			$(arr).prepend(element);
+		} else {
+			$(arr).prepend(element.clone());
+		}
+		if (this.controller && this.controller.update) {
+			this.controller.o = findOrangeChilds(this.controller.block, this.controller);
+			this.controller.update();
+		}
+	}
+
 	insertBefore(element) {
 		const arr = [];
 		for (let i = 0; i < this.elements.length; i++) {
